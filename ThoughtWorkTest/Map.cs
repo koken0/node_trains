@@ -86,18 +86,19 @@ namespace WindowsFormsApplication1
 			while (openSet.Count >= 1)
 			{
 				Node NodeCurrent = openSet[0];
-				string nodeCurrentName = NodeCurrent.getName();
 				for (int i = 1; i < openSet.Count; i++)
 				{
 					if (
 						openSet[i].getFCost() < NodeCurrent.getFCost() 
-						|| openSet[i].getFCost() == NodeCurrent.getFCost() 
-						&& openSet[i].getHCost() < NodeCurrent.getHCost()
+						//|| openSet[i].getFCost() == NodeCurrent.getFCost() 
+						//&& openSet[i].getHCost() < NodeCurrent.getHCost()
+						//&& openSet[i].getGCost() < NodeCurrent.getGCost()
 						)
 					{
 						NodeCurrent = openSet[i];
 					}
 				}
+				string nodeCurrentName = NodeCurrent.getName();
 
 				if (NodeCurrent == NodeTo && totalChecked >= 1)
 				{
@@ -109,23 +110,25 @@ namespace WindowsFormsApplication1
 
 				totalChecked++;
 
-				foreach (NodeConnection _NodeConnection in NodeCurrent.getConnections())
+				List<NodeConnection> ListOfConnections = NodeCurrent.getConnections();
+				foreach (NodeConnection _NodeConnection in ListOfConnections)
 				{
 					Node NodeConnected = _NodeConnection.getNodeTo();
 					string nodeConnectedName = NodeConnected.getName();
 					if (closedSet.Contains(NodeConnected))
 					{
-						continue;
+						//continue;
 					}
 
-					int cost = NodeCurrent.getGCost() + _NodeConnection.getDistance();
+					int distance = _NodeConnection.getDistance();
+					int cost = NodeCurrent.getFCost() + distance;
 					if (
-						cost < NodeConnected.getGCost()
+						cost < NodeConnected.getFCost()
 						|| !openSet.Contains(NodeConnected))
 					{
-						NodeConnected.setGCost(cost);
-						NodeConnected.setHCost(cost);
 						NodeConnected.setParent(NodeCurrent);
+						NodeConnected.setHCost(_NodeConnection.getDistance());
+						//NodeConnected.setGCost(cost);
 
 						if (!openSet.Contains(NodeConnected))
 						{
@@ -145,20 +148,104 @@ namespace WindowsFormsApplication1
 
 		private List<Node> retrace(Node NodeStart, Node NodeEnd)
 		{
-			int total = 0;
-			Node NodeCurent = NodeEnd;
-			List<Node> ListToRetraceNode = new List<Node>(){NodeCurent};
-			while (NodeCurent != NodeStart)
+			List<Node> ListToRetraceNode = new List<Node>(){NodeEnd};
+			Node NodeParent = NodeEnd.getParent();
+			while (NodeParent != null)
+				//while (NodeCurrent != NodeStart)
 			{
-				Node NodeParent = NodeCurent.getParent();
-				total += NodeParent.getConnectionWith(NodeCurent).getDistance();
-				NodeCurent = NodeParent;
-				ListToRetraceNode.Add(NodeCurent);
+				ListToRetraceNode.Add(NodeParent);
+				NodeParent = NodeParent.getParent();
+				if (NodeParent == NodeStart)
+				{
+					ListToRetraceNode.Add(NodeParent);
+					break;
+				}
 			}
 
 			ListToRetraceNode.Reverse();
 
 			return ListToRetraceNode;
+
+		}
+
+		public List<Node> ListOfTrip(string nodeNameFrom, string nodeNameTo, List<Node> ListOfIgnoredNode)
+		{
+
+			Node NodeFrom = this.getNodoByName(nodeNameFrom);
+			if (NodeFrom == null)
+			{
+				return null;
+			}
+			Node NodeTo = this.getNodoByName(nodeNameTo);
+			if (NodeTo == null)
+			{
+				return null;
+			}
+
+			List<Node> closedSet = new List<Node>();
+			List<Node> openSet = new List<Node>() { NodeFrom };
+			int totalChecked = 0;
+
+			while (openSet.Count >= 1)
+			{
+				Node NodeCurrent = openSet[0];
+				for (int i = 1; i < openSet.Count; i++)
+				{
+					if (
+						openSet[i].getFCost() < NodeCurrent.getFCost()
+						//|| openSet[i].getFCost() == NodeCurrent.getFCost() 
+						//&& openSet[i].getHCost() < NodeCurrent.getHCost()
+						//&& openSet[i].getGCost() < NodeCurrent.getGCost()
+						)
+					{
+						NodeCurrent = openSet[i];
+					}
+				}
+				string nodeCurrentName = NodeCurrent.getName();
+
+				if (NodeCurrent == NodeTo && totalChecked >= 1)
+				{
+					return retrace(NodeFrom, NodeTo);
+				}
+
+				openSet.Remove(NodeCurrent);
+				closedSet.Add(NodeCurrent);
+
+				totalChecked++;
+
+				List<NodeConnection> ListOfConnections = NodeCurrent.getConnections();
+				foreach (NodeConnection _NodeConnection in ListOfConnections)
+				{
+					Node NodeConnected = _NodeConnection.getNodeTo();
+					string nodeConnectedName = NodeConnected.getName();
+					if (closedSet.Contains(NodeConnected))
+					{
+						//continue;
+					}
+
+					int distance = _NodeConnection.getDistance();
+					int cost = NodeCurrent.getFCost() + distance;
+					if (
+						cost < NodeConnected.getFCost()
+						|| !openSet.Contains(NodeConnected))
+					{
+						NodeConnected.setParent(NodeCurrent);
+						NodeConnected.setHCost(_NodeConnection.getDistance());
+						//NodeConnected.setGCost(cost);
+
+						if (!openSet.Contains(NodeConnected))
+						{
+							openSet.Add(NodeConnected);
+						}
+
+					}
+
+				}
+
+			}
+
+			// Path doesn't exist
+			return null;
 
 		}
 

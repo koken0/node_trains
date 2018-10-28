@@ -20,7 +20,6 @@ namespace WindowsFormsApplication1
     const string distanceRoute = "the distance of the route";
     const string numberOfTripsStartingAndEndingWithMaximum = "the number of trips starting at @start@ and ending at @end@ with a maximum of @stops@ stops.";
     const string shortestRoute = "the length of the shortest route (in terms of distance to travel) from ";
-		const string numberOfTrips = "the number of trips starting at ";
 
     private void Form1_Load(object sender, EventArgs e)
     {
@@ -118,9 +117,9 @@ namespace WindowsFormsApplication1
 					listBox1.Items.Add(shortestRouteResult(toLowerLinea));
         }
 
-				if (toLowerLinea.Contains(numberOfTrips))
+				if (toLowerLinea.Contains(numberOfTripsStartingAndEndingWithMaximum))
 				{
-					listBox1.Items.Add(shortestRouteResult(toLowerLinea));
+					listBox1.Items.Add(numberOfTripsMaximumResult(toLowerLinea));
 				}
 
       }
@@ -159,7 +158,7 @@ namespace WindowsFormsApplication1
 			return total.ToString();
 		}
 
-		private string numberOfTripsResult(string linea)
+		private string numberOfTripsMaximumResult(string linea)
 		{
 			linea = linea.Replace(shortestRoute, "");
 			string startNode = linea.Substring(0, 1);

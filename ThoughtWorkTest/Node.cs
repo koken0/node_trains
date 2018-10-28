@@ -8,10 +8,10 @@ namespace WindowsFormsApplication1
   class Node
   {
 
-    string name;
-    List<NodeConnection> listOfNodeConnection = new List<NodeConnection>();
-		int gCost, hCost;
-		Node Parent;
+    private string name;
+    private List<NodeConnection> listOfNodeConnection = new List<NodeConnection>();
+		private int gCost, hCost;
+		private Node Parent;
 
     public Node(string myNombre)
     {
@@ -40,7 +40,12 @@ namespace WindowsFormsApplication1
 
 		public void setGCost(int value)
 		{
-			this.gCost = value;
+			int total = 0;
+			if (this.Parent != null)
+			{
+				total += this.Parent.getGCost();
+			}
+			this.gCost = total + value;
 		}
 
 		public int getHCost()
