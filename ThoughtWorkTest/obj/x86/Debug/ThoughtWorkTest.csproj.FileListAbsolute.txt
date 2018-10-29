@@ -5,10 +5,10 @@ C:\Users\jarriaran\SkyDrive\ThoughtWorkTest\ThoughtWorkTest\bin\Debug\ThoughtWor
 C:\Users\jarriaran\SkyDrive\ThoughtWorkTest\ThoughtWorkTest\bin\Debug\ThoughtWorkTest.pdb
 C:\Users\jarriaran\SkyDrive\ThoughtWorkTest\ThoughtWorkTest\obj\x86\Debug\ThoughtWorkTest.exe
 C:\Users\jarriaran\SkyDrive\ThoughtWorkTest\ThoughtWorkTest\obj\x86\Debug\ThoughtWorkTest.pdb
-C:\Users\jarriaran\SkyDrive\Postulaciones de Trabajo\2018 10 24\ThoughtWorkTest\ThoughtWorkTest\obj\x86\Debug\ThoughtWorkTest.exe
-C:\Users\jarriaran\SkyDrive\Postulaciones de Trabajo\2018 10 24\ThoughtWorkTest\ThoughtWorkTest\obj\x86\Debug\ThoughtWorkTest.pdb
-C:\Users\jarriaran\SkyDrive\Postulaciones de Trabajo\2018 10 24\ThoughtWorkTest\ThoughtWorkTest\bin\Debug\ThoughtWorkTest.exe
-C:\Users\jarriaran\SkyDrive\Postulaciones de Trabajo\2018 10 24\ThoughtWorkTest\ThoughtWorkTest\bin\Debug\ThoughtWorkTest.pdb
 C:\Users\jarriaran\SkyDrive\Postulaciones de Trabajo\2018 10 24\ThoughtWorkTest\ThoughtWorkTest\obj\x86\Debug\WindowsFormsApplication1.Form1.resources
-C:\Users\jarriaran\SkyDrive\Postulaciones de Trabajo\2018 10 24\ThoughtWorkTest\ThoughtWorkTest\obj\x86\Debug\WindowsFormsApplication1.Properties.Resources.resources
 C:\Users\jarriaran\SkyDrive\Postulaciones de Trabajo\2018 10 24\ThoughtWorkTest\ThoughtWorkTest\obj\x86\Debug\ThoughtWorkTest.csproj.GenerateResource.Cache
+C:\Users\jarriaran\SkyDrive\Postulaciones de Trabajo\2018 10 24\ThoughtWorkTest\ThoughtWorkTest\bin\Debug\Trains_Csharp.exe
+C:\Users\jarriaran\SkyDrive\Postulaciones de Trabajo\2018 10 24\ThoughtWorkTest\ThoughtWorkTest\bin\Debug\Trains_Csharp.pdb
+C:\Users\jarriaran\SkyDrive\Postulaciones de Trabajo\2018 10 24\ThoughtWorkTest\ThoughtWorkTest\obj\x86\Debug\Trains_Csharp.Properties.Resources.resources
+C:\Users\jarriaran\SkyDrive\Postulaciones de Trabajo\2018 10 24\ThoughtWorkTest\ThoughtWorkTest\obj\x86\Debug\Trains_Csharp.exe
+C:\Users\jarriaran\SkyDrive\Postulaciones de Trabajo\2018 10 24\ThoughtWorkTest\ThoughtWorkTest\obj\x86\Debug\Trains_Csharp.pdb

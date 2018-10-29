@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThoughtWorkTest", "ThoughtWorkTest\ThoughtWorkTest.csproj", "{1C5C0B39-3EFA-4F22-8069-D6899D9B2ABA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trains_Csharp", "ThoughtWorkTest\Trains_Csharp.csproj", "{1C5C0B39-3EFA-4F22-8069-D6899D9B2ABA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -8,18 +8,18 @@ namespace WindowsFormsApplication1
   class NodeConnection
   {
 
-    Node NodeTo;
+    Node NodeConnected;
     int distance;
 
     public NodeConnection(Node _NodoDestino, int _distancia)
     {
-      NodeTo = _NodoDestino;
+      NodeConnected = _NodoDestino;
       distance = _distancia;
     }
 
-    public Node getNodeTo()
+    public Node getNodeConnected()
     {
-      return NodeTo;
+      return NodeConnected;
     }
 
     public int getDistance()

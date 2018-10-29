@@ -5,89 +5,82 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace WindowsFormsApplication1
 {
-  public partial class Form1 : Form
-  {
-    public Form1()
-    {
-      InitializeComponent();
-    }
+	public partial class Form1 : Form
+	{
+		public Form1()
+		{
+			InitializeComponent();
+		}
 
-    Map myMap = new Map();
-    const string distanceRoute = "the distance of the route";
-    const string numberOfTripsStartingAndEndingWithMaximum = "the number of trips starting at @start@ and ending at @end@ with a maximum of @stops@ stops.";
-    const string shortestRoute = "the length of the shortest route (in terms of distance to travel) from ";
+		Map myMap = new Map();
+		const string distanceRoute = "the distance of the route";
+		const string shortestRoute = "the length of the shortest route (in terms of distance to travel) from ";
+		const string numberOfDifferent = "the number of different ";
 
-    private void Form1_Load(object sender, EventArgs e)
-    {
-      lbl1.Text = "";
-    }
+		private void Form1_Load(object sender, EventArgs e)
+		{
+			lbl1.Text = "";
+			lbl2.Text = "";
+		}
 
-    private void button1_Click(object sender, EventArgs e)
-    {
-      // todo
-			/*
-			"C:\\Users\\jarriaran\\Desktop\\grafo.txt"
+		private void button1_Click(object sender, EventArgs e)
+		{
 			if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
 			{
 				return;
 			}
        string[] lineas = System.IO.File.ReadAllLines(openFileDialog1.FileName);
-			*/
-			string[] lineas = System.IO.File.ReadAllLines("C:\\Users\\jarriaran\\Desktop\\grafo.txt");
 
-      foreach (string linea in lineas)
-      {
-        string[] dato = linea.ToLower().Split(',');
-        foreach (string viaje in dato)
-        {
-          string elemento = viaje.Trim();
+			foreach (string linea in lineas)
+			{
+				string[] dato = linea.ToLower().Split(',');
+				foreach (string viaje in dato)
+				{
+					string elemento = viaje.Trim();
 
-          string nombreOrigen = elemento.Substring(0, 1);
-          Node _NodoOrigen = myMap.getNodoByName(nombreOrigen);
-          if (_NodoOrigen == null)
-          {
-            _NodoOrigen = new Node(nombreOrigen);
-            myMap.addNode(_NodoOrigen);
-          }
+					string nombreOrigen = elemento.Substring(0, 1);
+					Node _NodoOrigen = myMap.getNodeByName(nombreOrigen);
+					if (_NodoOrigen == null)
+					{
+						_NodoOrigen = new Node(nombreOrigen);
+						myMap.addNode(_NodoOrigen);
+					}
 
-          string nombreDestino = elemento.Substring(1, 1);
-          Node _NodoDestino = myMap.getNodoByName(nombreDestino);
-          if (_NodoDestino == null)
-          {
-            _NodoDestino = new Node(nombreDestino);
-            myMap.addNode(_NodoDestino);
-          }
+					string nombreDestino = elemento.Substring(1, 1);
+					Node _NodoDestino = myMap.getNodeByName(nombreDestino);
+					if (_NodoDestino == null)
+					{
+						_NodoDestino = new Node(nombreDestino);
+						myMap.addNode(_NodoDestino);
+					}
 
-          int distancia = -1;
-          string valor = elemento.Substring(2, elemento.Length - 2);
-          if (!int.TryParse(valor, out distancia))
-          {
-            MessageBox.Show("Se detectó valor numerico " + valor);
-            return;
-          }
+					int distancia = -1;
+					string valor = elemento.Substring(2, elemento.Length - 2);
+					if (!int.TryParse(valor, out distancia))
+					{
+						MessageBox.Show("Se detectó valor numerico " + valor);
+						return;
+					}
 
-          if (_NodoOrigen.getConnectionWith(_NodoDestino) == null)
-          {
-            _NodoOrigen.addConnection(new NodeConnection(_NodoDestino, distancia));
-          }
+					if (_NodoOrigen.getConnectionWith(_NodoDestino) == null)
+					{
+						_NodoOrigen.addConnection(new NodeConnection(_NodoDestino, distancia));
+					}
 
-        }
-      }
+				}
+			}
 
-      MessageBox.Show(myMap.getCount() + " grafos cargados correctamente");
+			MessageBox.Show(myMap.getCount() + " grafos cargados correctamente");
 
-			// todo
-			button2.PerformClick();
+		}
 
-    }
-
-    private void button2_Click(object sender, EventArgs e)
-    {
-			/*
+		private void button2_Click(object sender, EventArgs e)
+		{
       if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
       {
         return;
@@ -96,53 +89,65 @@ namespace WindowsFormsApplication1
 			lbl2.Text = "";
 
       string[] lineas = System.IO.File.ReadAllLines(openFileDialog1.FileName);
-			 */
 			listBox1.Items.Clear();
-			string[] lineas = System.IO.File.ReadAllLines("C:\\Users\\jarriaran\\Desktop\\input.txt");
 
-      foreach (string linea in lineas)
-      {
-				if (linea.Contains("#"))
-				{
-					continue;
-				}
-        string toLowerLinea = linea.ToLower();
-        if (toLowerLinea.Contains(distanceRoute))
-        {
-          listBox1.Items.Add(distanceRouteResult(toLowerLinea));
-        }
-        
+			foreach (string linea in lineas)
+			{
+				if (linea.Contains("#")) continue;
+
+				string toLowerLinea = linea.ToLower();
+				if (toLowerLinea.Contains(distanceRoute))
+					listBox1.Items.Add(distanceRouteResult(linea));
+
 				if (toLowerLinea.Contains(shortestRoute))
-        {
-					listBox1.Items.Add(shortestRouteResult(toLowerLinea));
-        }
+					listBox1.Items.Add(shortestRouteResult(linea));
 
-				if (toLowerLinea.Contains(numberOfTripsStartingAndEndingWithMaximum))
+				if (
+					toLowerLinea.Contains("trips")
+					)
 				{
-					listBox1.Items.Add(numberOfTripsMaximumResult(toLowerLinea));
+					if (toLowerLinea.Contains("exactly"))
+						listBox1.Items.Add(numberOfTripsExactsStopsResult(linea));
+
+					if (toLowerLinea.Contains("maximum"))
+						listBox1.Items.Add(numberOfTripsExactsStopsResult(linea));
+
 				}
 
-      }
-    }
+				if (toLowerLinea.Contains(numberOfDifferent))
+					listBox1.Items.Add(numberOfDifferentMinimumDistanceResult(linea));
 
-    private string distanceRouteResult(string linea)
-    {
-      string[] route = linea.Replace(distanceRoute, "").Trim().Split('-');
-      int resultado = myMap.getDistanceForRoute(route);
-      if (resultado == -1)
-      {
-        return "NO SUCH ROUTE";
-      }
+			}
 
-      return resultado.ToString();
-    }
+			MessageBox.Show("Procesamiento finalizado");
+
+		}
+
+		private string distanceRouteResult(string linea)
+		{
+			MatchCollection matches = Regex.Matches(linea, "-[A-Z]| [A-Z]");
+			string[] route = new string[matches.Count];
+			int index = 0;
+			foreach (Match match in matches)
+			{
+				GroupCollection data = match.Groups;
+				route[index++] = data[0].Value.ToString().Trim().Replace("-","");
+			}
+			
+			int resultado = myMap.getDistanceForRoute(route);
+			if (resultado == -1)
+			{
+				return "NO SUCH ROUTE";
+			}
+
+			return resultado.ToString();
+		}
 
 		private string shortestRouteResult(string linea)
 		{
-			linea = linea.Replace(shortestRoute, "");
-			string startNode = linea.Substring(0, 1);
-			string endNode = linea.Substring(linea.Length - 2, 1).Replace(".", "").Replace(" ", "");
-			string[] route = linea.Replace(distanceRoute, "").Trim().Split('-');
+			MatchCollection matches = Regex.Matches(linea, " [A-Z]");
+			string startNode = matches[0].Value.Trim();
+			string endNode = matches[1].Value.Trim();
 			List<Node> ListOfShortestRoute = myMap.getShortestRoute(startNode, endNode);
 
 			if (ListOfShortestRoute == null)
@@ -151,22 +156,46 @@ namespace WindowsFormsApplication1
 			}
 
 			int total = 0;
-			for (int j = 0; j < ListOfShortestRoute.Count-1; j++)
+			for (int j = 0; j < ListOfShortestRoute.Count - 1; j++)
 			{
 				total += ListOfShortestRoute[j].getConnectionWith(ListOfShortestRoute[j + 1]).getDistance();
 			}
 			return total.ToString();
 		}
 
-		private string numberOfTripsMaximumResult(string linea)
+		private string numberOfTripsExactsStopsResult(string linea)
 		{
-			linea = linea.Replace(shortestRoute, "");
-			string startNode = linea.Substring(0, 1);
-			string endNode = linea.Replace("and ending at ", "").Substring(0, 1);
-			string maximumStop = "";
-			return "Lol";
+			MatchCollection matches = Regex.Matches(linea, " [A-Z] ");
+			string startNode = matches[0].Value.Trim();
+			string endNode = matches[1].Value.Trim();
+			int algo = 0;
+			int maximum = -1;
+			int exactly = -1;
+			matches = Regex.Matches(linea, "[0-9]+");
+			if (linea.Contains("maximum")){
+				int.TryParse(matches[0].Value, out maximum);
+				algo = myMap.getPathsWithConstrainsStops(myMap.getNodeByName(startNode), myMap.getNodeByName(endNode), 0, maximum);
+			}else{
+				int.TryParse(matches[0].Value, out exactly);
+				algo = myMap.getPathsWithConstrainsStops(myMap.getNodeByName(startNode), myMap.getNodeByName(endNode), exactly,0);
+			}
+			
+			return algo.ToString();
 		}
 
-  }
+		private string numberOfDifferentMinimumDistanceResult(string linea)
+		{
+			MatchCollection matches = Regex.Matches(linea, " [A-Z] ");
+			string startNode = matches[0].Value.Trim();
+			string endNode = matches[1].Value.Trim();
+			matches = Regex.Matches(linea, "[0-9]+");
+			int maximum = -1;
+			int.TryParse(matches[0].Value,out maximum);
+			int algo = myMap.getPathsWithLessDistanceThan(myMap.getNodeByName(startNode), myMap.getNodeByName(endNode), maximum);
+
+			return algo.ToString();
+		}
+
+	}
 
 }

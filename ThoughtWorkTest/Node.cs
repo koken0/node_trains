@@ -9,11 +9,11 @@ namespace WindowsFormsApplication1
   {
 
     private string name;
-    private List<NodeConnection> listOfNodeConnection = new List<NodeConnection>();
+    private List<NodeConnection> ListOfNodeConnection = new List<NodeConnection>();
 		private int gCost, hCost;
-		private Node Parent;
+		private Node NodeParent;
 
-    public Node(string myNombre)
+		public Node(string myNombre)
     {
       name = myNombre;
     }
@@ -25,12 +25,12 @@ namespace WindowsFormsApplication1
 
 		public Node getParent()
 		{
-			return this.Parent;
+			return this.NodeParent;
 		}
 
 		public void setParent(Node myParent)
 		{
-			this.Parent = myParent;
+			this.NodeParent = myParent;
 		}
 
 		public int getGCost()
@@ -40,12 +40,12 @@ namespace WindowsFormsApplication1
 
 		public void setGCost(int value)
 		{
-			int total = 0;
-			if (this.Parent != null)
+			int total = value;
+			if (this.NodeParent != null)
 			{
-				total += this.Parent.getGCost();
+				total += this.NodeParent.getGCost();
 			}
-			this.gCost = total + value;
+			this.gCost = total;
 		}
 
 		public int getHCost()
@@ -60,7 +60,7 @@ namespace WindowsFormsApplication1
 
     public void addConnection(NodeConnection myNodoConexion)
     {
-      listOfNodeConnection.Add(myNodoConexion);
+      ListOfNodeConnection.Add(myNodoConexion);
     }
 
     public string getName()
@@ -70,9 +70,9 @@ namespace WindowsFormsApplication1
 
     public NodeConnection getConnectionWith(Node _Nodo)
     {
-      foreach (NodeConnection _NodoConexion in listOfNodeConnection)
+      foreach (NodeConnection _NodoConexion in ListOfNodeConnection)
       {
-        if (_NodoConexion.getNodeTo() == _Nodo)
+        if (_NodoConexion.getNodeConnected().getName() == _Nodo.getName())
         {
           return _NodoConexion;
         }
@@ -84,7 +84,16 @@ namespace WindowsFormsApplication1
 
 		public List<NodeConnection> getConnections()
 		{
-			return this.listOfNodeConnection;
+			return this.ListOfNodeConnection;
+		}
+
+		public Node getClone()
+		{
+			Node NodeNew = new Node(this.name);
+
+			NodeNew.ListOfNodeConnection = this.ListOfNodeConnection;
+
+			return NodeNew;
 		}
 
   }
